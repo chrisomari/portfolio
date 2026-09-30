@@ -80,6 +80,15 @@ h2+*{margin-top:2rem}h2+.sub{margin-top:.7rem}.sub+*{margin-top:2rem}
 .links a:hover{background:var(--pop);color:#fff}
 .certs{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:1rem}
 .certs .item{margin:0}
+.lab{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--sun);border-radius:8px;padding:1.3rem 1.4rem;margin-bottom:1.2rem;min-width:0;overflow-wrap:break-word}
+.lab h3{font-size:1.25rem;font-weight:500}
+.lab .meta{color:var(--sun);font-size:.85rem;margin:.2rem 0 1rem}
+.lab h4{font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--pop);margin:1rem 0 .4rem}
+.lab h4:first-of-type{margin-top:0}
+.lab p{margin:0;color:var(--mute)}
+.lab ul{margin:.3rem 0 0;padding-left:1.2rem;color:var(--mute)}
+.lab li{margin:.2rem 0}
+.lab>img{width:100%;max-height:280px;object-fit:cover;border-radius:6px;margin-bottom:1rem;border:1px solid var(--line)}
 .filters{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-bottom:1.5rem}
 .filters button{font:inherit;font-size:.85rem;background:none;border:1px solid var(--pop);color:var(--pop);padding:.25rem 1.1rem;border-radius:99px;cursor:pointer}
 .filters button[aria-pressed=true]{background:var(--pop);color:#fff}
@@ -197,19 +206,6 @@ const DATA = {
       links: []
     },
     {
-      title: "75 Years of Formula 1 Analysis",
-      dates: "July 2026 to August 2026",
-      image: "",
-      description: "Explored decades of F1 championship data: drivers, constructors, circuits, races and results.",
-      points: [
-        "Used SQL and Power BI to find performance trends across seasons.",
-        "Interactive dashboard to explore results by season and category."
-      ],
-      tags: ["SQL", "Power BI"],
-      category: "Data",
-      links: []
-    },
-    {
       title: "ARC Hotel Booking System (Front-End)",
       dates: "January 2024 to August 2024",
       image: "",
@@ -236,6 +232,116 @@ const DATA = {
       dates: "July 2026 to August 2026",
       points: ["Practical training in data extraction, cleaning, analysis and visualisation using SQL Server and Power BI."],
       links: [{ label: "View certificate", url: "https://drive.google.com/file/d/178lyEKS3wIyywV1xiGfDZ2HwxQP-9wbb/view?usp=drive_link" }]
+    }
+  ],
+
+  // Ongoing training that isn't finished yet, so it has no certificate link yet.
+  training: [
+    {
+      title: "Security Analyst Track",
+      org: "Cyber Shujaa",
+      logo: "images/cybershujaa.png",   // save their logo here if you have one, else leave ""
+      dates: "2026 (ongoing)",
+      points: [
+        "Hands-on training covering penetration testing fundamentals, enumeration, exploitation and privilege escalation using Hack The Box.",
+        "Weekly assignment reports documenting tools used, methodology and lessons learned for each module."
+      ],
+      links: []
+    }
+  ],
+
+  // ---- LAB CHALLENGES ------------------------------------------------
+  // TO ADD A NEW ONE: copy the block below, paste it ABOVE the first one
+  // (newest first). image = a screenshot of your terminal/result (or "").
+  // Never put real flag values, credentials, or target IPs from a live/paid
+  // engagement here — only lab/training environments like HTB are fine.
+  labs: [
+    {
+      title: "75 Years of Formula 1 Analysis",
+      platform: "Personal Data Analytics Project",
+      dates: "July 2026 to August 2026",
+      image: "images/labs/f1-analysis.png",
+      problem: "Explore decades of Formula 1 World Championship data (drivers, constructors, circuits, races, results and podiums) and turn it into a dashboard that surfaces real performance trends across seasons.",
+      approach: [
+        "Sourced a historical Formula 1 dataset from Kaggle covering drivers, constructors, circuits, races and results.",
+        "Loaded and queried the raw tables in SQL Server, joining races, results and drivers/constructors into a usable structure.",
+        "Cleaned the data in Power BI: fixed inconsistent naming, handled missing values and removed duplicate or irrelevant records.",
+        "Modelled relationships between the tables and built calculated measures for wins, podiums and championship points.",
+        "Designed an interactive Power BI dashboard so results can be explored by season, driver, constructor and circuit.",
+        "Polished the visuals and layout so the dashboard reads clearly at a glance, not just functionally."
+      ],
+      tools: ["Kaggle", "SQL Server", "Power BI"],
+      lessons: [
+        "Most of the real work is in the cleaning and modelling stage — a good dashboard is only as reliable as the data structure behind it.",
+        "Letting the user filter by season and category makes decades of data far easier to explore than a single static chart."
+      ],
+      links: []
+    },
+    {
+      title: "GetSimpleCMS Unauthenticated RCE to Root",
+      platform: "Hack The Box Academy — Getting Started (Knowledge Check)",
+      dates: "September 2026",
+      image: "images/labs/knowledge-check.png",
+      problem: "Given a target running an unknown web application, gain an initial foothold and escalate to root, retrieving both the user and root flags.",
+      approach: [
+        "Ran a full Nmap scan and found SSH (22) and HTTP (80) open.",
+        "Used WhatWeb and the page source to identify the application as GetSimpleCMS 3.3.15.",
+        "Ran Gobuster to enumerate directories (/admin/, /backups/, /data/, /plugins/, /theme/).",
+        "Searched Exploit-DB with SearchSploit and found an unauthenticated RCE affecting that version.",
+        "Used Metasploit, switching to the php/reverse_php payload after the default payload failed, to get a shell as www-data.",
+        "Read /home/mrb3n/user.txt, which was world-readable, for the user flag.",
+        "Ran sudo -l and found www-data could run /usr/bin/php as root with no password.",
+        "Used sudo php -r 'system(\"/bin/bash\");' to spawn a root shell and read /root/root.txt."
+      ],
+      tools: ["Nmap", "WhatWeb", "Gobuster", "SearchSploit", "Metasploit"],
+      lessons: [
+        "A staged payload failing doesn't mean the exploit is wrong; switching payload type solved it.",
+        "sudo -l is one of the fastest privilege-escalation checks, and a misconfigured NOPASSWD binary is often enough on its own."
+      ],
+      links: []
+    },
+    {
+      title: "Nibbles: Plugin Upload to Root via Writable Cron-Style Script",
+      platform: "Hack The Box Academy — Getting Started",
+      dates: "September 2026",
+      image: "images/labs/nibbles.png",
+      problem: "Compromise the Nibbles machine end to end: enumerate the web app, get a foothold, then escalate to root.",
+      approach: [
+        "Used WhatWeb and page source review to identify Apache 2.4.18 and a hidden /nibbleblog/ directory.",
+        "Logged into the Nibbleblog admin panel with credentials found during enumeration (admin / nibbles).",
+        "Abused the vulnerable ‘My image’ plugin to upload a PHP web shell, confirmed with a test command, then a Bash reverse shell.",
+        "Caught the shell with a Netcat listener and upgraded it to a full TTY with Python's pty module.",
+        "Found personal.zip in the nibbler home directory; unzipped it and found a world-writable monitor.sh script.",
+        "Confirmed with sudo -l that nibbler could run that exact script as root with no password.",
+        "Appended a reverse-shell one-liner to monitor.sh, ran it through sudo, and caught a root shell on a second listener.",
+        "Verified with id (uid=0) and read /root/root.txt."
+      ],
+      tools: ["WhatWeb", "Gobuster", "Netcat", "Python (pty)"],
+      lessons: [
+        "A file that's readable AND writable by your low-privilege user, but runnable as root via sudo, is a direct path to full compromise.",
+        "Upgrading a raw Netcat shell to a proper TTY early makes every later step (editing files, running interactive tools) much easier."
+      ],
+      links: []
+    },
+    {
+      title: "WordPress Simple Backup Plugin — Path Traversal",
+      platform: "Hack The Box Academy — Getting Started (Public Exploits)",
+      dates: "September 2026",
+      image: "images/labs/public-exploits.png",
+      problem: "Identify the service running on a target and use a public exploit to read a protected file outside the web root.",
+      approach: [
+        "Confirmed the web server was reachable with curl -I, then used Nmap to fingerprint Apache 2.4.41 and WordPress 5.6.1.",
+        "Inspected the site with curl and spotted the Simple Backup Plugin 2.7.10.",
+        "Searched Exploit-DB with SearchSploit and found a matching path-traversal exploit (EDB-ID 51937).",
+        "Copied the exploit locally with searchsploit -m and reviewed the Python script before running it.",
+        "Ran the exploit against the target with a traversal depth of 5, pointed at /flag.txt, and retrieved its contents directly."
+      ],
+      tools: ["cURL", "Nmap", "SearchSploit", "Python"],
+      lessons: [
+        "Fingerprinting the exact plugin version, not just the CMS, is what makes SearchSploit results useful.",
+        "Always read an exploit script before running it, so you understand what it actually sends and can adapt the parameters."
+      ],
+      links: []
     }
   ],
 
@@ -338,6 +444,16 @@ const item = i => `<article class="item" data-cat="${esc(i.category || "")}">
 </article>`;
 const list = a => a && a.length ? a.map(item).join("") : "";
 const skill = n => { const s = iconSrc(n); return `<div class="sk">${s ? `<img src="${esc(s)}" alt="" onerror="this.outerHTML='<i>${esc(n[0])}</i>'">` : `<i>${esc(n[0])}</i>`}${esc(n)}</div>`; };
+const lab = l => `<article class="lab">
+  ${l.image ? `<img src="${esc(l.image)}" alt="${esc(l.title)}" loading="lazy" onerror="this.remove()">` : ""}
+  <h3>${esc(l.title)}</h3>
+  <div class="meta">${[l.platform, l.dates].filter(Boolean).map(esc).join(" | ")}</div>
+  <h4>Problem</h4><p>${esc(l.problem)}</p>
+  ${l.approach && l.approach.length ? `<h4>Approach</h4><ul>${l.approach.map(p => `<li>${esc(p)}</li>`).join("")}</ul>` : ""}
+  ${tagsHtml(l.tools)}
+  ${l.lessons && l.lessons.length ? `<h4>Key lessons</h4><ul>${l.lessons.map(p => `<li>${esc(p)}</li>`).join("")}</ul>` : ""}
+  ${linksHtml(l.links)}
+</article>`;
 const svc = s => `<article class="svc"><h3>${esc(s.title)}</h3><div><p style="margin:0">${esc(s.text)}</p>${tagsHtml(s.tags)}</div><a class="go" href="${esc(s.link || "#projects")}" aria-label="${esc(s.title)}">&#8599;</a></article>`;
 
 const D = DATA, C = D.contact;
@@ -377,7 +493,9 @@ add("projects", "Projects", "My Projects",
   (cats.length > 1 ? `<div class="filters" id="filters"><button aria-pressed="true" data-f="">All</button>${cats.map(c => `<button aria-pressed="false" data-f="${esc(c)}">${esc(c)}</button>`).join("")}</div>` : "") +
   `<div id="projlist">${list(D.projects)}</div>` +
   (C.github ? `<div class="more"><a class="btn main" href="${esc(C.github)}" target="_blank" rel="noopener">See all projects on GitHub</a></div>` : ""));
+add("labs", "Lab Challenges", "Lab Challenges", D.labs && D.labs.length ? D.labs.map(lab).join("") : "", "Hands-on penetration-testing exercises from my Cyber Shujaa Security Analyst training on Hack The Box.");
 add("certifications", "Certifications", "My Certifications", D.certifications && D.certifications.length ? `<div class="certs">${list(D.certifications)}</div>` : "");
+add("training", "Training", "Ongoing Training", D.training && D.training.length ? `<div class="certs">${list(D.training)}</div>` : "");
 add("community", "Community", "Student Tech Community", list(D.community));
 add("education", "Education", "My Education", list(D.education));
 add("testimonials", "Testimonials", "What People Say", D.testimonials && D.testimonials.length ?
